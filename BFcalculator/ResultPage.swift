@@ -6,70 +6,7 @@
 //
 
 import SwiftUI
-//
-// MARK: - ResultPage: Displays the entered information
-//struct ResultPage: View {
-//    let selectedGender: String
-//    let age: String
-//    let ethnicity: String
-//    let height: String
-//    let weight: String
-//    let waist: String
-//    let neck: String
-//    let hip: String
-//    
-//    var body: some View {
-//        ScrollView {
-//            VStack(alignment: .leading, spacing: 20) {
-//                Text("Based on your entered information:")
-//                    .font(Font.custom("Poppins", size: 24).weight(.semibold))
-//                    .padding(.bottom, 20)
-//                
-//                Group {
-//                    Text("Gender: \(selectedGender)")
-//                    Text("Age: \(age)")
-//                    Text("Ethnicity: \(ethnicity)")
-//                    Text("Height: \(height) cm")
-//                    Text("Weight: \(weight) kg")
-//                    Text("Waist: \(waist) cm")
-//                    Text("Neck: \(neck) cm")
-//                    Text("Hip: \(hip) cm")
-//                }
-//                .font(Font.custom("Poppins", size: 18))
-//                .foregroundColor(.black)
-//                
-//                Text("Your Body Fat Percentage is")
-//                    .font(Font.custom("Poppins", size: 24).weight(.semibold))
-//                    .padding(.bottom, 20)
-//                
-//                Spacer()
-//            }
-//            .padding()
-//            .navigationBarTitle("Result", displayMode: .inline)  // Title for the Result page
-//            .navigationBarBackButtonHidden(false)  // Default back button
-//        }
-//    }
-//}
 
-
-
-//struct ResultPage: View {
-//    var body: some View {
-//        VStack(spacing: 20) {
-//            // Title Text
-//            Text("Generic Test View")
-//                .font(.largeTitle)
-//                .fontWeight(.bold)
-//                .padding(.top)
-//            
-//            // Description Text
-//            Text("This is a simple, generic view for testing purposes.")
-//                .font(.body)
-//                .multilineTextAlignment(.center)
-//                .padding(.horizontal)
-//        }
-//    }
-//}
 
 struct ResultPage: View {
     let selectedGender: String
