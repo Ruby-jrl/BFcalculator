@@ -69,6 +69,8 @@ struct SurveyFormView: View {
                     
                     TextField("Hip (cm)", text: $hip)
                         .keyboardType(.decimalPad)
+                        .disabled(selectedGender == "Male")
+                        .foregroundColor(selectedGender == "Male" ? .gray : .primary)
                     
                 }
             }
