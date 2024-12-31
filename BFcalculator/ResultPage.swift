@@ -47,24 +47,6 @@ struct ResultPage: View {
                     
                 }
                 
-                
-                // Body Fat Description
-                Text("explanation of body fat ranges")
-                    .foregroundColor(.black)
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                
-                Text("Body Fat Ranges")
-                    .onAppear {
-                        print("Body Fat Ranges:")
-                        for range in bodyFatRanges {
-                            print("Description: \(range.description), Min: \(range.minPercentage)%, Max: \(range.maxPercentage)%")
-                        }
-                    }
-                
                 BodyFatTableView()
                 
                 BodyFatUncertaintyView(
@@ -78,6 +60,9 @@ struct ResultPage: View {
                     hip: hip
                 )
             }
+            
+            NearestNView()
+            
         }
         .padding()
         
@@ -136,6 +121,8 @@ struct BodyFatTableView: View {
 
     var body: some View {
         VStack {
+            Text("Reference for Body Fat Ranges")
+            
             // Header row
             HStack {
                 Text("Description")
