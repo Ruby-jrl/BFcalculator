@@ -8,6 +8,34 @@
 
 import Foundation
 
+func parseNeighbors(from response: [[String: Any]]) -> [Neighbor] {
+    var neighbors: [Neighbor] = []
+
+    for entry in response {
+        // Extract the ID or assign a default
+        print(entry)
+        let id = entry["id"] as? String ?? "Unknown"
+
+        // Extract feature values with default fallback
+        let height = entry["height"] as? Double ?? 0.0
+        let weight = entry["weight"] as? Double ?? 0.0
+        let waist = entry["waist_circumference"] as? Double ?? 0.0
+        let hip = entry["hip_circumference"] as? Double ?? 0.0
+        let neck = entry["neck_circumference"] as? Double ?? 0.0
+        let bodyFat = entry["body_fat"] as? Double ?? 0.0
+
+        // Combine features into an array
+        let features = [height, weight, waist, hip, neck, bodyFat]
+
+        // Create a Neighbor object
+        let neighbor = Neighbor(id: id, features: features, imageName: "placeholder")
+
+        // Add to the array
+        neighbors.append(neighbor)
+    }
+    return neighbors
+}
+
 func findNearestNeighbors(features: [Double], k: Int, completion: @escaping ([[String: Any]]?) -> Void) {
     // Define the API URL
     guard let url = URL(string: "http://127.0.0.1:5000/nearest_neighbors") else {

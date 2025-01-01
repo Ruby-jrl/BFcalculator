@@ -31,7 +31,13 @@ struct ResultPage: View {
                 // Body Fat Percentage Section
                 VStack(alignment: .center, spacing: 15) {
                     
-                    if let bodyFat = NavyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height, hip: hip) {
+                    if let bodyFat = NavyMethodCalculator(
+                        selectedGender: selectedGender,
+                        waist: waist,
+                        neck: neck,
+                        height: height,
+                        hip: hip
+                    ) {
                         Text(String(format: "%.1f", bodyFat))
                             .font(Font.custom("Poppins", size: 100).weight(.semibold))
                             .foregroundColor(Color(red: 0.14, green: 0.42, blue: 1))
@@ -61,7 +67,16 @@ struct ResultPage: View {
                 )
             }
             
-            NearestNView()
+            NearestNView(
+                selectedGender: selectedGender,
+                age: age,
+                ethnicity: ethnicity,
+                height: height,
+                weight: weight,
+                waist: waist,
+                neck: neck,
+                hip: hip
+            )
             
         }
         .padding()
