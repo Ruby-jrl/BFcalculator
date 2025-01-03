@@ -9,6 +9,8 @@ import SwiftUI
 
 
 struct ResultPage: View {
+    let fromPage: String
+    
     let selectedGender: String
     let age: String
     let ethnicity: String
@@ -18,42 +20,61 @@ struct ResultPage: View {
     let neck: String
     let hip: String
     
+    func calculateBodyFat() -> Double? {
+        print("fromPage: \(fromPage)")
+        switch fromPage {
+        case "Navy":
+            print("navy branch")
+            return NavyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height, hip: hip)
+//        case "NN":
+//            return ArmyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height)
+        default:
+            print("wrong branch")
+            return nil
+        }
+    }
+    
     var body: some View {
         
         let bodyFatRanges = selectedGender == "Male" ? maleBodyFatRanges : femaleBodyFatRanges
+        let bodyFat = calculateBodyFat()
         
         ScrollView{
             VStack(spacing: 20) {
                 // Header Information
                 Text("Based on the information you provided, your Body Fat Percentage is:")
-                    .foregroundColor(Color(red: 0.14, green: 0.42, blue: 1))
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+                    .foregroundColor(Color(red: 0.2, green: 0.4, blue: 1))
                 
                 // Body Fat Percentage Section
-                VStack(alignment: .center, spacing: 15) {
+                if let bodyFat = bodyFat {
+                    Text(String(format: "%.1f", bodyFat))
+                        .font(.system(size: 100, weight: .bold, design: .rounded))
+                        .foregroundColor(Color(red: 0.2, green: 0.4, blue: 1))
                     
-                    if let bodyFat = NavyMethodCalculator(
-                        selectedGender: selectedGender,
-                        waist: waist,
-                        neck: neck,
-                        height: height,
-                        hip: hip
-                    ) {
-                        Text(String(format: "%.1f", bodyFat))
-                            .font(Font.custom("Poppins", size: 100).weight(.semibold))
-                            .foregroundColor(Color(red: 0.14, green: 0.42, blue: 1))
-                        
-                        // Scale bar
-                        BodyFatScaleBar(bodyFatRanges: bodyFatRanges, calculatedBFPercentage: bodyFat)
-                        
-                    } else {
-                        Text("N/A")  // Display "N/A" or some default text when calculation fails (i.e., nil)
-                            .font(Font.custom("Poppins", size: 100).weight(.semibold))
-                            .foregroundColor(.red)
-                    }
+                    // Scale bar
+                    BodyFatScaleBar(bodyFatRanges: bodyFatRanges, calculatedBFPercentage: bodyFat)
                     
+                } else {
+                    Text("N/A")  // when calculation fails (i.e., nil)
+                        .font(.system(size: 100, weight: .bold, design: .rounded))
+                        .foregroundColor(.red)
                 }
                 
                 BodyFatTableView()
+                
+                
+                Button(action: {
+                    print("record button was tapped!")
+                }) {
+                    Text("Record this result")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+
                 
                 BodyFatUncertaintyView(
                     selectedGender: selectedGender,

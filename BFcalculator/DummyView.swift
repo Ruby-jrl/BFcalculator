@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-
-struct BodyModelView: View {
+// currently dummy view - placeholder
+struct DummyView: View {
     var body: some View {
         VStack(spacing: 20) {
             // Title Text

@@ -8,49 +8,54 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var selectedGender: String = ""
-    @State private var age: String = ""
-    @State private var ethnicity: String = ""
-    @State private var height: String = ""
-    @State private var weight: String = ""
-    @State private var waist: String = ""
-    @State private var neck: String = ""
-    @State private var hip: String = ""
-    
-    @State private var showSurveyForm = false
     
     var body: some View {
         NavigationView{
             VStack(spacing: 20) {
-                Text("Importance of Knowing and Monitoring Body Fat")
+                Text("This app helps you estimate and track your body fat!")
                     .padding()
                 
-                NavigationLink(destination: SurveyFormView(
-                    selectedGender: $selectedGender,
-                    age: $age,
-                    ethnicity: $ethnicity,
-                    height: $height,
-                    weight: $weight,
-                    waist: $waist,
-                    neck: $neck,
-                    hip: $hip
-                )) {
-                    Text("Open Body Fat Calculator")
+                NavigationLink(destination: NavyCalculatorView()) {
+                    Text("Navy Method Calculator")
+                        .font(.headline)
                         .padding()
+                        .frame(width: 250)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: BodyModelView()) {
-                    Text("Your 3D Body Model")
+                NavigationLink(destination: DummyView()) {
+                    Text("Neural Network Method Calculator")
+                        .font(.headline)
                         .padding()
+                        .frame(width: 250)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                
+                NavigationLink(destination: DummyView()) {
+                    Text("History Tracking")
+                        .font(.headline)
+                        .padding()
+                        .frame(width: 250)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                
+                NavigationLink(destination: DummyView()) {
+                    Text("Dummy page")
+                        .font(.headline)
+                        .padding()
+                        .frame(width: 250)
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle("BFCalculator")
         }
         
     }
