@@ -28,7 +28,7 @@ func parseNeighbors(from response: [[String: Any]]) -> [Neighbor] {
         let features = [height, weight, waist, hip, neck, bodyFat]
 
         // Create a Neighbor object
-        let neighbor = Neighbor(id: id, features: features, imageName: "placeholder")
+        let neighbor = Neighbor(id: id, features: features, imageName: id)
 
         // Add to the array
         neighbors.append(neighbor)

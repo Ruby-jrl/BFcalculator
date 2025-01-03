@@ -67,6 +67,26 @@ struct NearestNView: View {
             } else {
 //                try make it horizontal scroll?
                 ScrollView {
+                    
+                    // try make it work later
+//                    if let path = Bundle.main.path(forResource: "R24800001", ofType: "jpg", inDirectory: "Fenland1"),
+//                       let uiImage = UIImage(contentsOfFile: path) {
+//                        Image(uiImage: uiImage)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 150)
+//                            .cornerRadius(10)
+//                            .padding(.bottom, 10)
+//                    } else {
+//                        // Use a placeholder if the image does not exist
+//                        Image("dxa-placeholder")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 150)
+//                            .cornerRadius(10)
+//                            .padding(.bottom, 10)
+//                    }
+                    
                     ForEach(neighborsObjs.indices, id: \.self) { index in
                         VStack(alignment: .leading, spacing: 10) {
                             // Title
@@ -75,12 +95,13 @@ struct NearestNView: View {
                                 .padding(.bottom, 5)
 
                             // Image
-                            Image(neighborsObjs[index].imageName)
+                            getImage(named: neighborsObjs[index].imageName)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(height: 150)
+                                .frame(height: 200)
                                 .cornerRadius(10)
                                 .padding(.bottom, 10)
+                            
 
                             // Table
                             TableView(features: neighborsObjs[index].features, featureNames: featureNames)
@@ -150,5 +171,14 @@ struct TableView: View {
                 Divider()
             }
         }
+    }
+}
+
+
+private func getImage(named imageName: String) -> Image {
+    if let uiImage = UIImage(named: imageName) {
+        return Image(uiImage: uiImage)
+    } else {
+        return Image("dxa-placeholder")
     }
 }
