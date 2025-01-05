@@ -16,9 +16,10 @@ struct BodyMetric: Identifiable {
 
 
 
-struct BodyFatUncertaintyView: View {
+struct UncertaintyView: View {
     @State private var metrics: [BodyMetric] = []
     
+    let fromPage: String
     let selectedGender: String
     let age: String
     let ethnicity: String
@@ -54,7 +55,8 @@ struct BodyFatUncertaintyView: View {
             }
         }
         .onAppear {
-            metrics = BodyFatUncertaintyView.prepareMetrics(
+            metrics = UncertaintyView.prepareMetrics(
+                fromPage: fromPage,
                 gender: selectedGender,
                 age: age,
                 ethnicity: ethnicity,
@@ -68,37 +70,57 @@ struct BodyFatUncertaintyView: View {
     }
     
     
-    private static func prepareMetrics(gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String) -> [BodyMetric] {
-        // Perform any necessary data manipulations here
-        let heightRange = [NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) + 2), hip: hip), NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) - 2), hip: hip)]
-        let hBFLow = heightRange[0] ?? 0
-        let hBFHigh = heightRange[1] ?? 0
-        let hBFLowString = String(format: "%.1f", hBFLow)
-        let hBFHighString = String(format: "%.1f", hBFHigh)
+    private static func prepareMetrics(fromPage: String, gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String) -> [BodyMetric] {
+        // data manipulations here
+        var heightRange: [Double]
+        var waistRange: [Double]
+        var neckRange: [Double]
+        var hipRange: [Double]
+        
+        if fromPage == "Navy" {
+            heightRange = [
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) + 2), hip: hip) ?? 0,
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) - 2), hip: hip) ?? 0
+            ]
+            
+            waistRange = [
+                NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) - 2), neck: neck, height: height, hip: hip) ?? 0,
+                NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) + 2), neck: neck, height: height, hip: hip) ?? 0
+            ]
+            
+            neckRange = [
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) + 2), height: height, hip: hip) ?? 0,
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) - 2), height: height, hip: hip) ?? 0
+            ]
+            
+            hipRange = [
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) - 2)) ?? 0,
+                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) + 2)) ?? 0
+            ]
+            
+        } else {
+            heightRange = [0,0]
+            waistRange = [0,0]
+            neckRange = [0,0]
+            hipRange = [0,0]
+        }
+        let hBFLowString = String(format: "%.1f", heightRange[0])
+        let hBFHighString = String(format: "%.1f", heightRange[1])
         let heightError = hBFLowString + " - " + hBFHighString + "%"
         
         
-        let waistRange = [NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) - 2), neck: neck, height: height, hip: hip), NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) + 2), neck: neck, height: height, hip: hip)]
-        let wBFLow = waistRange[0] ?? 0
-        let wBFHigh = waistRange[1] ?? 0
-        let wBFLowString = String(format: "%.1f", wBFLow)
-        let wBFHighString = String(format: "%.1f", wBFHigh)
+        let wBFLowString = String(format: "%.1f", waistRange[0])
+        let wBFHighString = String(format: "%.1f", waistRange[1])
         let waistError = wBFLowString + " - " + wBFHighString + "%"
         
-        
-        let neckRange = [NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) + 2), height: height, hip: hip), NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) - 2), height: height, hip: hip)]
-        let nBFLow = neckRange[0] ?? 0
-        let nBFHigh = neckRange[1] ?? 0
-        let nBFLowString = String(format: "%.1f", nBFLow)
-        let nBFHighString = String(format: "%.1f", nBFHigh)
+
+        let nBFLowString = String(format: "%.1f", neckRange[0])
+        let nBFHighString = String(format: "%.1f", neckRange[1])
         let neckError = nBFLowString + " - " + nBFHighString + "%"
         
         
-        let hipRange = [NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) - 2)), NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) + 2))]
-        let hipBFLow = hipRange[0] ?? 0
-        let hipBFHigh = hipRange[1] ?? 0
-        let hipBFLowString = String(format: "%.1f", hipBFLow)
-        let hipBFHighString = String(format: "%.1f", hipBFHigh)
+        let hipBFLowString = String(format: "%.1f", hipRange[0])
+        let hipBFHighString = String(format: "%.1f", hipRange[1])
         let hipError = gender == "Female" ? hipBFLowString + " - " + hipBFHighString + "%" : "-"
         
 

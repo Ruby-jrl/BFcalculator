@@ -48,9 +48,29 @@ struct ResultView: View {
                                    neck: neck,
                                    hip: hip)
                     } else if selectedTab == 1 {
-                        Page2View()
+                        UncertaintyView(
+                            fromPage: fromPage,
+                            selectedGender: selectedGender,
+                            age: age,
+                            ethnicity: ethnicity,
+                            height: height,
+                            weight: weight,
+                            waist: waist,
+                            neck: neck,
+                            hip: hip
+                        )
                     } else {
-                        Page3View()
+                        NearestNView(
+                            fromPage: fromPage,
+                            selectedGender: selectedGender,
+                            age: age,
+                            ethnicity: ethnicity,
+                            height: height,
+                            weight: weight,
+                            waist: waist,
+                            neck: neck,
+                            hip: hip
+                        )
                     }
                 }
                 .transition(.slide) // Optional animation when switching pages
@@ -59,23 +79,8 @@ struct ResultView: View {
             }
         }
 //        .onAppear {
-//            print("View Loaded, fromPage = \(fromPage)") // ✅ Works inside .onAppear()
+//            print("View Loaded, fromPage = \(fromPage)") // Works inside .onAppear()
 //                }
     }
     
-}
-
-// Sample Pages
-struct Page2View: View {
-    var body: some View {
-        Text("This is Page 2")
-            .font(.largeTitle)
-    }
-}
-
-struct Page3View: View {
-    var body: some View {
-        Text("This is Page 3")
-            .font(.largeTitle)
-    }
 }

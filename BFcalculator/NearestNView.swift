@@ -17,6 +17,7 @@ import SwiftUI
 struct NearestNView: View {
     @State private var neighborsObjs: [Neighbor] = []
     
+    let fromPage: String
     let selectedGender: String
     let age: String
     let ethnicity: String
@@ -40,7 +41,8 @@ struct NearestNView: View {
         VStack {
 
             // Fetch Button
-            Button(action: {processNearestNeighbors( // just adding {} solves the () @mainactor -> void problem  -why
+            Button(action: { processNearestNeighbors( // just adding {} solves the () @mainactor -> void problem  -why
+                fromPage: fromPage,
                 gender: selectedGender,
                 age: age,
                 height: height,
@@ -48,8 +50,8 @@ struct NearestNView: View {
                 waist: waist,
                 neck: neck,
                 hip: hip
-            )}) {
-                Text("Fetch Neighbors")
+            ) }) {
+                Text("Click to Fetch Neighbors")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -67,8 +69,6 @@ struct NearestNView: View {
             } else {
 //                try make it horizontal scroll?
                 ScrollView {
-                    
-                    // try make it work later
 //                    if let path = Bundle.main.path(forResource: "R24800001", ofType: "jpg", inDirectory: "Fenland1"),
 //                       let uiImage = UIImage(contentsOfFile: path) {
 //                        Image(uiImage: uiImage)
@@ -112,6 +112,9 @@ struct NearestNView: View {
                         .cornerRadius(10)
                         .padding(.horizontal)
                     }
+                    
+                    Text("Data source: Fenland Study - MRC Epidemiology Unit")
+                        .foregroundColor(.gray)
                 }
             }
 
@@ -119,7 +122,7 @@ struct NearestNView: View {
     }
 
     // Simulated fetch function
-    func processNearestNeighbors(gender: String, age: String, height: String, weight: String, waist: String, neck: String, hip: String) {
+    func processNearestNeighbors(fromPage: String, gender: String, age: String, height: String, weight: String, waist: String, neck: String, hip: String) {
         
         // let userFeatures = [1, 22.5, 167, 50, 63, 84, 24.5] // dummy user data, replace with actual user input
         let userFeatures = [gender == "Male" ? "0" : "1", age, height, weight, waist, hip, neck].compactMap { Double($0) }
@@ -134,7 +137,7 @@ struct NearestNView: View {
 //            Neighbor(id: "3", features: [175, 50, 65, 84, 25, 20], imageName: "placeholder")
 //        ]
         
-        findNearestNeighbors(features: userFeatures, k: k) { neighbors in
+        findNearestNeighbors(fromPage: fromPage, features: userFeatures, k: k) { neighbors in
             // Save the result in the @State variable
             if let neighbors = neighbors {
                 DispatchQueue.main.async {

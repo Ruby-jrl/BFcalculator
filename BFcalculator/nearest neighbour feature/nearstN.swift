@@ -36,7 +36,7 @@ func parseNeighbors(from response: [[String: Any]]) -> [Neighbor] {
     return neighbors
 }
 
-func findNearestNeighbors(features: [Double], k: Int, completion: @escaping ([[String: Any]]?) -> Void) {
+func findNearestNeighbors(fromPage: String, features: [Double], k: Int, completion: @escaping ([[String: Any]]?) -> Void) {
     // Define the API URL
     guard let url = URL(string: "http://127.0.0.1:5000/nearest_neighbors") else {
         print("Invalid URL")
@@ -46,6 +46,7 @@ func findNearestNeighbors(features: [Double], k: Int, completion: @escaping ([[S
 
     // Create the JSON payload
     let payload: [String: Any] = [
+        "fromPage": fromPage,
         "features": features,
         "k": k
     ]
