@@ -18,21 +18,39 @@ data = pd.read_csv(DATABASE_PATH)
 def nearest_neighbors():
     # Parse user input from JSON request
     input_data = request.json
+    fromPage = input_data["fromPage"]
     user_data = np.array(input_data["features"])  # Example: [1, 22.5, 167, 50, 63, 84, 24.5]
-    feature_indices = [2, 3, 4, 5, 6] # height, weight, waist, hip, neck
-    user_features = user_data[feature_indices]
-    user_sex = user_data[0]
     k = input_data.get("k", 3)  # Default to 3 neighbors
+    print(fromPage, user_data)
 
-    # Extract feature columns
-    # id,sex,age,height,weight,waist_circumference,hip_circumference,neck_circumference,body_fat
-    # feature columns to check for nearest neighbour
-    feature_columns = ["height", "weight", "waist_circumference", "hip_circumference", "neck_circumference"]
-    data_features = data[feature_columns].values
+
+    # check input size - differs for different model: navy, neural network, my model etc.
+
+    if fromPage == "Navy":
+        feature_indices = [1, 2, 3, 4] # height, waist, hip, neck
+        user_features = user_data[feature_indices]
+        user_sex = user_data[0]
+    
+        # Extract feature columns
+        # id,sex,age,height,weight,waist_circumference,hip_circumference,neck_circumference,body_fat
+        # feature columns to check for nearest neighbor
+        feature_columns = ["height", "waist_circumference", "hip_circumference", "neck_circumference"]
+        data_features = data[feature_columns].values
+        
+    else:
+        feature_indices = [2, 3, 4, 5, 6] # height, weight, waist, hip, neck
+        user_features = user_data[feature_indices]
+        user_sex = user_data[0]
+    
+        # Extract feature columns
+        # id,sex,age,height,weight,waist_circumference,hip_circumference,neck_circumference,body_fat
+        # feature columns to check for nearest neighbor
+        feature_columns = ["height", "weight", "waist_circumference", "hip_circumference", "neck_circumference"]
+        data_features = data[feature_columns].values
 
     # Compute distances (Euclidean)
     distances = np.linalg.norm(data_features - user_features, axis=1)
-    
+
     # make sure gender is the same
     gender_column = data['sex'].values
     valid_indices = np.where(gender_column == user_sex)[0]
