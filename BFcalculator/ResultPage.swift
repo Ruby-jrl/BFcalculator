@@ -20,24 +20,11 @@ struct ResultPage: View {
     let neck: String
     let hip: String
     
-    func calculateBodyFat() -> Double? {
-        print("fromPage: \(fromPage)")
-        switch fromPage {
-        case "Navy":
-            print("navy branch")
-            return NavyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height, hip: hip)
-//        case "NN":
-//            return ArmyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height)
-        default:
-            print("wrong branch")
-            return nil
-        }
-    }
+    @State private var bodyFat: Double? = nil
     
     var body: some View {
         
         let bodyFatRanges = selectedGender == "Male" ? maleBodyFatRanges : femaleBodyFatRanges
-        let bodyFat = calculateBodyFat()
         
         ScrollView{
             VStack(spacing: 20) {
@@ -56,10 +43,11 @@ struct ResultPage: View {
                     BodyFatScaleBar(bodyFatRanges: bodyFatRanges, calculatedBFPercentage: bodyFat)
                     
                 } else {
-                    Text("N/A")  // when calculation fails (i.e., nil)
+                    Text("...")  // when calculation fails (i.e., nil)
                         .font(.system(size: 100, weight: .bold, design: .rounded))
                         .foregroundColor(.red)
                 }
+                
                 
                 BodyFatTableView()
                 
@@ -76,9 +64,37 @@ struct ResultPage: View {
                 }
             }
         }
+        .task {
+            await calculateBodyFat()  // ✅ Fetch async data when view appears
+        }
         .padding()
         
     }
+    
+    
+    func calculateBodyFat() async {
+        print("calculating body fat, fromPage: \(fromPage)")
+        
+        switch fromPage {
+        case "Navy":
+            print("navy branch")
+            bodyFat = NavyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height, hip: hip)
+            
+        case "NN":
+            print("NN branch")
+            NNCalculator (gender: selectedGender, height: height, weight: weight, waist: waist) { result in
+                if let value = result {
+                    bodyFat = value
+                } else {
+                    print("No value received")
+                }
+            }
+            
+        default:
+            print("wrong branch")
+        }
+    }
+
 }
 
 

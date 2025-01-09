@@ -25,7 +25,7 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: DummyView()) {
+                NavigationLink(destination: NeuralNetworkView()) {
                     Text("Neural Network Method Calculator")
                         .font(.headline)
                         .padding()

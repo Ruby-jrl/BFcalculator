@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-// Create a data model to represent each row in the table.
+// data model to represent each row in the table
 struct BodyMetric: Identifiable {
     var id = UUID()
     let metric: String
@@ -14,10 +14,7 @@ struct BodyMetric: Identifiable {
     let range: String
 }
 
-
-
 struct UncertaintyView: View {
-    @State private var metrics: [BodyMetric] = []
     
     let fromPage: String
     let selectedGender: String
@@ -28,6 +25,8 @@ struct UncertaintyView: View {
     let waist: String
     let neck: String
     let hip: String
+    
+    @State private var metrics: [BodyMetric] = []
     
     var body: some View {
         
@@ -55,28 +54,38 @@ struct UncertaintyView: View {
             }
         }
         .onAppear {
-            metrics = UncertaintyView.prepareMetrics(
-                fromPage: fromPage,
-                gender: selectedGender,
-                age: age,
-                ethnicity: ethnicity,
-                height: height,
-                weight: weight,
-                waist: waist,
-                neck: neck,
-                hip: hip
-            )
+            fetchMetrics()  // fetch asynchronously
         }
     }
     
+    private func fetchMetrics() {
+        UncertaintyView.prepareMetrics(
+            fromPage: fromPage,
+            gender: selectedGender,
+            age: age,
+            ethnicity: ethnicity,
+            height: height,
+            weight: weight,
+            waist: waist,
+            neck: neck,
+            hip: hip
+        ) { result in
+            DispatchQueue.main.async {
+                metrics = result
+            }
+        }
+    }
     
-    private static func prepareMetrics(fromPage: String, gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String) -> [BodyMetric] {
-        // data manipulations here
-        var heightRange: [Double]
-        var waistRange: [Double]
-        var neckRange: [Double]
-        var hipRange: [Double]
+    private static func prepareMetrics(fromPage: String, gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String, completion: @escaping ([BodyMetric]) -> Void) {
         
+        let dispatchGroup = DispatchGroup()  // track async tasks
+
+        var heightRange: [Double?] = [nil, nil]
+        var weightRange: [Double?] = [nil, nil]
+        var waistRange: [Double?] = [nil, nil]
+        var neckRange: [Double?] = [nil, nil]
+        var hipRange: [Double?] = [nil, nil]
+
         if fromPage == "Navy" {
             heightRange = [
                 NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) + 2), hip: hip) ?? 0,
@@ -98,43 +107,114 @@ struct UncertaintyView: View {
                 NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) + 2)) ?? 0
             ]
             
+            let heightError = (heightRange[0] == nil && heightRange[1] == nil) ? "-" :
+                "\(String(format: "%.1f", heightRange[0] ?? 0)) - \(String(format: "%.1f", heightRange[1] ?? 0))%"
+            
+            let weightError = (weightRange[0] == nil && weightRange[1] == nil) ? "-" :
+                "\(String(format: "%.1f", weightRange[0] ?? 0)) - \(String(format: "%.1f", weightRange[1] ?? 0))%"
+                    
+            let waistError = (waistRange[0] == nil && waistRange[1] == nil) ? "-" :
+                "\(String(format: "%.1f", waistRange[0] ?? 0)) - \(String(format: "%.1f", waistRange[1] ?? 0))%"
+            
+            let neckError = (neckRange[0] == nil && neckRange[1] == nil) ? "-" :
+                "\(String(format: "%.1f", neckRange[0] ?? 0)) - \(String(format: "%.1f", neckRange[1] ?? 0))%"
+            
+            let hipError = (hipRange[0] == nil && hipRange[1] == nil) ? "-" :
+                gender == "Female" ? "\(String(format: "%.1f", hipRange[0] ?? 0)) - \(String(format: "%.1f", hipRange[1] ?? 0))%" : "-"
+            
+            completion([
+                BodyMetric(metric: "Gender", value: gender, range: "-"),
+                BodyMetric(metric: "Age", value: age, range: "-"),
+                BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
+                BodyMetric(metric: "Height", value: height + " ± 2", range: heightError),
+                BodyMetric(metric: "Weight", value: weight + " ± 2", range: weightError),
+                BodyMetric(metric: "Waist", value: waist + " ± 2", range: waistError),
+                BodyMetric(metric: "Neck", value: neck + " ± 2", range: neckError),
+                BodyMetric(metric: "Hip", value: hip + " ± 2", range: hipError)
+            ])
+            
+        } else if fromPage == "NN" {
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: String((Double(height) ?? 0) + 2), weight: weight, waist: waist) { result in
+                heightRange[0] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: String((Double(height) ?? 0) - 2), weight: weight, waist: waist) { result in
+                heightRange[1] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: height, weight: String((Double(weight) ?? 0) - 2), waist: waist) { result in
+                weightRange[0] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: height, weight: String((Double(weight) ?? 0) + 2), waist: waist) { result in
+                weightRange[1] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) - 2)) { result in
+                waistRange[0] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            dispatchGroup.enter()
+            NNCalculator(gender: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) + 2)) { result in
+                waistRange[1] = result ?? 0
+                dispatchGroup.leave()
+            }
+
+            // notify when all async calls finish
+            dispatchGroup.notify(queue: .main) {
+                let heightError = (heightRange[0] == nil && heightRange[1] == nil) ? "-" :
+                    "\(String(format: "%.1f", heightRange[0] ?? 0)) - \(String(format: "%.1f", heightRange[1] ?? 0))%"
+                
+                let weightError = (weightRange[0] == nil && weightRange[1] == nil) ? "-" :
+                    "\(String(format: "%.1f", weightRange[0] ?? 0)) - \(String(format: "%.1f", weightRange[1] ?? 0))%"
+                        
+                let waistError = (waistRange[0] == nil && waistRange[1] == nil) ? "-" :
+                    "\(String(format: "%.1f", waistRange[0] ?? 0)) - \(String(format: "%.1f", waistRange[1] ?? 0))%"
+                
+                let neckError = (neckRange[0] == nil && neckRange[1] == nil) ? "-" :
+                    "\(String(format: "%.1f", neckRange[0] ?? 0)) - \(String(format: "%.1f", neckRange[1] ?? 0))%"
+                
+                let hipError = (hipRange[0] == nil && hipRange[1] == nil) ? "-" :
+                    gender == "Female" ? "\(String(format: "%.1f", hipRange[0] ?? 0)) - \(String(format: "%.1f", hipRange[1] ?? 0))%" : "-"
+
+
+                // construct and return the array of BodyMetric
+                completion([
+                    BodyMetric(metric: "Gender", value: gender, range: "-"),
+                    BodyMetric(metric: "Age", value: age, range: "-"),
+                    BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
+                    BodyMetric(metric: "Height", value: height + " ± 2", range: heightError),
+                    BodyMetric(metric: "Weight", value: weight + " ± 2", range: weightError),
+                    BodyMetric(metric: "Waist", value: waist + " ± 2", range: waistError),
+                    BodyMetric(metric: "Neck", value: neck + " ± 2", range: neckError),
+                    BodyMetric(metric: "Hip", value: hip + " ± 2", range: hipError)
+                ])
+            }
+
         } else {
-            heightRange = [0,0]
-            waistRange = [0,0]
-            neckRange = [0,0]
-            hipRange = [0,0]
+            completion([
+                BodyMetric(metric: "Gender", value: gender, range: "-"),
+                BodyMetric(metric: "Age", value: age, range: "-"),
+                BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
+                BodyMetric(metric: "Height", value: height + " ± 2", range: "-"),
+                BodyMetric(metric: "Weight", value: weight, range: "-"),
+                BodyMetric(metric: "Waist", value: waist + " ± 2", range: "-"),
+                BodyMetric(metric: "Neck", value: neck + " ± 2", range: "-"),
+                BodyMetric(metric: "Hip", value: hip + " ± 2", range: "-")
+            ])
         }
-        let hBFLowString = String(format: "%.1f", heightRange[0])
-        let hBFHighString = String(format: "%.1f", heightRange[1])
-        let heightError = hBFLowString + " - " + hBFHighString + "%"
-        
-        
-        let wBFLowString = String(format: "%.1f", waistRange[0])
-        let wBFHighString = String(format: "%.1f", waistRange[1])
-        let waistError = wBFLowString + " - " + wBFHighString + "%"
-        
-
-        let nBFLowString = String(format: "%.1f", neckRange[0])
-        let nBFHighString = String(format: "%.1f", neckRange[1])
-        let neckError = nBFLowString + " - " + nBFHighString + "%"
-        
-        
-        let hipBFLowString = String(format: "%.1f", hipRange[0])
-        let hipBFHighString = String(format: "%.1f", hipRange[1])
-        let hipError = gender == "Female" ? hipBFLowString + " - " + hipBFHighString + "%" : "-"
-        
-
-        // Construct and return the array of BodyMetric
-        return [
-            BodyMetric(metric: "Gender", value: gender, range: "-"),
-            BodyMetric(metric: "Age", value: age, range: "-"),
-            BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
-            BodyMetric(metric: "Height", value: height + " ± 2", range: heightError),
-            BodyMetric(metric: "Weight", value: weight, range: "-"),
-            BodyMetric(metric: "Waist", value: waist + " ± 2", range: waistError),
-            BodyMetric(metric: "Neck", value: neck + " ± 2", range: neckError),
-            BodyMetric(metric: "Hip", value: hip + " ± 2", range: hipError)
-        ]
     }
+
     
 }
