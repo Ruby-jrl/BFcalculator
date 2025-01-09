@@ -93,14 +93,15 @@ struct SurveyFormView: View {
                 Spacer()
                 
                 NavigationLink(destination: ResultPage(
-                        selectedGender: selectedGender,
-                        age: age,
-                        ethnicity: ethnicity,
-                        height: height,
-                        weight: weight,
-                        waist: waist,
-                        neck: neck,
-                        hip: hip
+                    fromPage: "",
+                    selectedGender: selectedGender,
+                    age: age,
+                    ethnicity: ethnicity,
+                    height: height,
+                    weight: weight,
+                    waist: waist,
+                    neck: neck,
+                    hip: hip
                 )) {
                     Text("Submit")
                         .padding()

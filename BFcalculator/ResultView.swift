@@ -38,15 +38,17 @@ struct ResultView: View {
             ScrollView {
                 VStack {
                     if selectedTab == 0 {
-                        ResultPage(fromPage: fromPage,
-                                   selectedGender: selectedGender,
-                                   age: age,
-                                   ethnicity: ethnicity,
-                                   height: height,
-                                   weight: weight,
-                                   waist: waist,
-                                   neck: neck,
-                                   hip: hip)
+                        ResultPage(
+                            fromPage: fromPage,
+                            selectedGender: selectedGender,
+                            age: age,
+                            ethnicity: ethnicity,
+                            height: height,
+                            weight: weight,
+                            waist: waist,
+                            neck: neck,
+                            hip: hip
+                        )
                     } else if selectedTab == 1 {
                         UncertaintyView(
                             fromPage: fromPage,
@@ -74,7 +76,7 @@ struct ResultView: View {
                     }
                 }
                 .transition(.slide) // Optional animation when switching pages
-                .animation(.easeInOut, value: selectedTab)
+                .animation(.default, value: selectedTab)
                 .padding()
             }
         }

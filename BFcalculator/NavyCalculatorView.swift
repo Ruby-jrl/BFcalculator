@@ -23,8 +23,6 @@ struct NavyCalculatorView: View {
     var body: some View {
 
         VStack {
-            Text("The Navy method calculator uses the formula developed by the Naval Health Research Center, which uses your sex, height, waist, neck, and hip (only for female) measurements to estimate your body fat")
-                .padding()
             
             Form {
                 // Section for Demographic Information
@@ -34,34 +32,24 @@ struct NavyCalculatorView: View {
                         Text("Male").tag("Male")
                         Text("Female").tag("Female")
                     }
-                    .pickerStyle(SegmentedPickerStyle())
+                    .pickerStyle(.segmented)
                 }
                 
                 // Section for Body Metric Information
                 Section(header: Text("Body Metric Information")) {
                     // Height Input
                     TextField("Height (cm)", text: $height)
-                        .keyboardType(.decimalPad)
+                        //.keyboardType(.decimalPad)
                         //.listRowSeparator(.visible)
-                    
                     TextField("Waist (cm)", text: $waist)
-                        .keyboardType(.decimalPad)
-                        .listRowSeparator(.automatic)
-                       
                     TextField("Neck (cm)", text: $neck)
-                        .keyboardType(.decimalPad)
-                        .listRowSeparator(.automatic)
-                        
-                    TextField("Hip (cm)", text: $hip)
-                        .keyboardType(.decimalPad)
+                    TextField("Hip (cm) - disabled for male", text: $hip)
                         .disabled(selectedGender == "Male")
                         .opacity(selectedGender == "Male" ? 0.3 : 1.0) // field look disabled
-                        .listRowSeparator(.automatic)
                 }
             }
             
             HStack {
-                
                 // Reset Button
                 Button(action: {
                     resetForm()
@@ -76,23 +64,6 @@ struct NavyCalculatorView: View {
 
                 Spacer()
                 
-//                NavigationLink(destination: ResultPage(
-//                    fromPage: "Navy",
-//                    selectedGender: selectedGender,
-//                    age: "",
-//                    ethnicity: "",
-//                    height: height,
-//                    weight: "",
-//                    waist: waist,
-//                    neck: neck,
-//                    hip: selectedGender == "Male" ? "" : hip
-//                )) {
-//                    Text("Submit")
-//                        .padding()
-//                        .background(Color.green)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(8)
-//                }
                 NavigationLink(destination: ResultView(
                     fromPage: $fromPage,
                     selectedGender: $selectedGender,
@@ -115,7 +86,7 @@ struct NavyCalculatorView: View {
             .padding()
         }
         .navigationTitle("Navy Method")
-            
+
     }
     
     

@@ -19,8 +19,6 @@ struct NeuralNetworkView: View {
     @State private var waist: String = ""
     @State private var neck: String = ""
     @State private var hip: String = ""
-    
-//    @State private var bodyFat: Double? = nil
 
     var body: some View {
         VStack {
@@ -34,15 +32,10 @@ struct NeuralNetworkView: View {
                     .pickerStyle(.segmented)
                 }
                 
-                // Section for Body Metric Information
                 Section(header: Text("Body Metric Information")) {
-                    // Height Input
                     TextField("Height (cm)", text: $height)
                     TextField("Weight (kg)", text: $weight)
                     TextField("Waist (cm)", text: $waist)
-//                    TextField("Hip (cm)", text: $hip)
-//                        .disabled(selectedGender == "Male")
-//                        .opacity(selectedGender == "Male" ? 0.3 : 1.0) // field look disabled
                 }
             }
             
@@ -88,7 +81,6 @@ struct NeuralNetworkView: View {
     
     // Reset function to clear all fields
     private func resetForm() {
-        // Reset to default value
         selectedGender = ""
         height = ""
         weight = ""

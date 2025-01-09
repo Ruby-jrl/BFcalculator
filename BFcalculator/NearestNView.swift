@@ -67,7 +67,6 @@ struct NearestNView: View {
                     .font(.headline)
                     .padding()
             } else {
-//                try make it horizontal scroll?
                 ScrollView {
 //                    if let path = Bundle.main.path(forResource: "R24800001", ofType: "jpg", inDirectory: "Fenland1"),
 //                       let uiImage = UIImage(contentsOfFile: path) {
@@ -126,9 +125,9 @@ struct NearestNView: View {
         
         // let userFeatures = [1, 22.5, 167, 50, 63, 84, 24.5] // dummy user data, replace with actual user input
         let userFeatures = [gender == "Male" ? "0" : "1", age, height, weight, waist, hip, neck].compactMap { Double($0) }
-        // Filters out any elements that cannot be converted to Double.
-        let k = 3 // Number of nearest neighbors to find
-        
+        // (compactMap filters out any elements that cannot be converted to Double)
+        // Number of nearest neighbors to find
+        let k = 3
         
         // dummy neighbor data, replace with actual logic and neighbor data
 //        neighbors = [
@@ -145,15 +144,12 @@ struct NearestNView: View {
                 }
                 print(neighbors)
             } else {
-                print("Failed to write to neighborsArr")
+                print("Failed to write to neighborsObjs")
             }
             
         }
-        // print(neighborsObjs) // empty - execution not blocked by finNearestNeighbors - need to ensure the subsequent code executes after the asynchronous task above completes
-        
     }
 }
-
 
 
 
