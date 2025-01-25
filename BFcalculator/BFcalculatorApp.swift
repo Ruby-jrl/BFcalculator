@@ -12,6 +12,7 @@ struct BFcalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(HistoryManager())
         }
     }
 }

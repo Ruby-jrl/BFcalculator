@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var historyManager = HistoryManager() // Declare in the "parent" view where the object first created
     
     var body: some View {
         NavigationView{
@@ -35,7 +36,7 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: DummyView()) {
+                NavigationLink(destination: HistoryView()) {
                     Text("History Tracking")
                         .font(.headline)
                         .padding()

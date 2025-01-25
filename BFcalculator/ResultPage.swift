@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct ResultPage: View {
+    @EnvironmentObject var historyManager: HistoryManager
     let fromPage: String
     
     let selectedGender: String
@@ -51,21 +52,22 @@ struct ResultPage: View {
                 
                 BodyFatTableView()
                 
-                
-                Button(action: {
-                    print("record button was tapped!")
-                }) {
-                    Text("Record this result")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                // the button should ideally flash - to show user it is pressed - also consider not recording duplicates
+                Button("Save to History") {
+                    let newEntry = HistoryEntry(
+                        id: UUID(),
+                        timestamp: Date(),
+                        bodyFatPercentage: bodyFat ?? 0.0,
+                        method: fromPage
+                    )
+                    historyManager.addEntry(newEntry)
+                    print("clicked save to history")
+                    print(historyManager.entries)
                 }
             }
         }
         .task {
-            await calculateBodyFat()  // ✅ Fetch async data when view appears
+            await calculateBodyFat()  // Fetch async data when view appears
         }
         .padding()
         
