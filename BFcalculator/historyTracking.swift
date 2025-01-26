@@ -19,6 +19,7 @@ struct HistoryEntry: Identifiable, Codable {
 
 // storage mechanism
 public class HistoryManager: ObservableObject {
+    
     @Published var entries: [HistoryEntry] = []
     
     private let historyKey = "historyEntries"
@@ -51,6 +52,5 @@ public class HistoryManager: ObservableObject {
     }
 }
 
-
-
-// next step: add session or user ID to history
+// currenly using UserDefaults - single user, local storage
+// for multi-user, use cloud storage (such as AWS backend service)

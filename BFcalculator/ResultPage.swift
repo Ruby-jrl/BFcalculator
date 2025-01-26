@@ -126,6 +126,8 @@ struct BodyFatTableView: View {
                 Text("Description")
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .lineLimit(1) // text need be smaller - fit in line
+                    .minimumScaleFactor(0.5)
                 Text("Men")
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .center)

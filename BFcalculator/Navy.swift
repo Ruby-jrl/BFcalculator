@@ -15,17 +15,17 @@ func NavyMethodCalculator(selectedGender: String, waist: String, neck: String, h
         
         if selectedGender == "Male" {
             // Formula for men
+            // 1.0324-0.19077\log\left(80-40\right)+0.15456\log\left(170\right)
             // 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450
-            let waistMinusNeck = waistNum - neckNum
-            let logWaistNeck = log10(waistMinusNeck)
+            let logWaistNeck = log10(waistNum - neckNum)
             let logHeight = log10(heightNum)
             let factor = 1.0324 - 0.19077 * logWaistNeck + 0.15456 * logHeight
             return 495 / factor - 450
         } else if let hipNum = Double(hip) {
             // Formula for women
+            // 1.29579-0.35004\log\left(80+90-40\right)+0.22100\log\left(170\right)
             // 495 / (1.29579 - 0.35004 * log10(waist + hip - neck) + 0.22100 * log10(height)) - 450
-            let waistPlusHipMinusNeck = waistNum + hipNum - neckNum
-            let logWaistHipNeck = log10(waistPlusHipMinusNeck)
+            let logWaistHipNeck = log10(waistNum + hipNum - neckNum)
             let logHeight = log10(heightNum)
             let factor = 1.29579 - 0.35004 * logWaistHipNeck + 0.22100 * logHeight
             return 495 / factor - 450
