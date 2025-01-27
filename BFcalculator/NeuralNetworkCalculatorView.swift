@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct NeuralNetworkView: View {
+struct NeuralNetworkCalculatorView: View {
     @State private var fromPage: String = "NN"
     
     @State private var selectedGender: String = ""
