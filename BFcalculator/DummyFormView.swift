@@ -94,7 +94,7 @@ struct SurveyFormView: View {
                 
                 NavigationLink(destination: ResultPage(
                     fromPage: "",
-                    selectedGender: selectedGender,
+                    sex: selectedGender,
                     age: age,
                     ethnicity: ethnicity,
                     height: height,

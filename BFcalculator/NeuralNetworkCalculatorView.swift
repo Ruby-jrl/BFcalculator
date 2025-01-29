@@ -11,7 +11,7 @@ import SwiftUI
 struct NeuralNetworkCalculatorView: View {
     @State private var fromPage: String = "NN"
     
-    @State private var selectedGender: String = ""
+    @State private var sex: String = ""
     @State private var age: String = ""
     @State private var ethnicity: String = ""
     @State private var height: String = ""
@@ -25,7 +25,7 @@ struct NeuralNetworkCalculatorView: View {
             
             Form {
                 Section(header: Text("Demographic Information")) {
-                    Picker("Gender", selection: $selectedGender) {
+                    Picker("Gender", selection: $sex) {
                         Text("Male").tag("Male")
                         Text("Female").tag("Female")
                     }
@@ -56,7 +56,7 @@ struct NeuralNetworkCalculatorView: View {
                 
                 NavigationLink(destination: ResultView(
                     fromPage: $fromPage,
-                    selectedGender: $selectedGender,
+                    sex: $sex,
                     age: $age,
                     ethnicity: $ethnicity,
                     height: $height,
@@ -81,7 +81,7 @@ struct NeuralNetworkCalculatorView: View {
     
     // Reset function to clear all fields
     private func resetForm() {
-        selectedGender = ""
+        sex = ""
         height = ""
         weight = ""
         waist = ""

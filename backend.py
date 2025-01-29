@@ -58,9 +58,9 @@ def nearest_neighbors():
     # Compute distances (Euclidean)
     distances = np.linalg.norm(data_features - user_features, axis=1)
 
-    # make sure gender is the same
-    gender_column = data['sex'].values
-    valid_indices = np.where(gender_column == user_sex)[0]
+    # make sure sex is the same
+    sex_column = data['sex'].values
+    valid_indices = np.where(sex_column == user_sex)[0]
     filtered_distances = distances[valid_indices]
 
     # Get the nearest neighbors
@@ -142,7 +142,7 @@ def predict():
     print("start to predict")
     try:
         data = request.json # input data from Swift app
-        sex = 0 if data["gender"] == "Male" else 1
+        sex = 0 if data["sex"] == "Male" else 1
         height = float(data["height"])
         weight = float(data["weight"])
         waist = float(data["waist"])

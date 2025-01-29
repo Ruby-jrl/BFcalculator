@@ -33,7 +33,7 @@ struct BFcalculatorTests {
         let hip = arguments[4]
         let expected = Double(arguments[5]) // returns nil if ""
 
-        let result: Double? = BFcalculator.NavyMethodCalculator(selectedGender: sex, waist: waist, neck: neck, height: height, hip: hip)
+        let result: Double? = BFcalculator.NavyMethodCalculator(sex: sex, waist: waist, neck: neck, height: height, hip: hip)
         let roundedResult: Double? = result.map { ($0 * 10).rounded() / 10 }
 
         #expect(roundedResult == expected)

@@ -11,7 +11,7 @@ struct ResultView: View {
     @State private var selectedTab = 0 // Default to the first page
     
     @Binding var fromPage: String
-    @Binding var selectedGender: String
+    @Binding var sex: String
     @Binding var age: String
     @Binding var ethnicity: String
     @Binding var height: String
@@ -40,7 +40,7 @@ struct ResultView: View {
                     if selectedTab == 0 {
                         ResultPage(
                             fromPage: fromPage,
-                            selectedGender: selectedGender,
+                            sex: sex,
                             age: age,
                             ethnicity: ethnicity,
                             height: height,
@@ -52,7 +52,7 @@ struct ResultView: View {
                     } else if selectedTab == 1 {
                         UncertaintyView(
                             fromPage: fromPage,
-                            selectedGender: selectedGender,
+                            sex: sex,
                             age: age,
                             ethnicity: ethnicity,
                             height: height,
@@ -64,7 +64,7 @@ struct ResultView: View {
                     } else {
                         NearestNView(
                             fromPage: fromPage,
-                            selectedGender: selectedGender,
+                            sex: sex,
                             age: age,
                             ethnicity: ethnicity,
                             height: height,

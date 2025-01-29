@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-func NavyMethodCalculator(selectedGender: String, waist: String, neck: String, height: String, hip: String) -> Double? {
+func NavyMethodCalculator(sex: String, waist: String, neck: String, height: String, hip: String) -> Double? {
     
     if let waistNum = Double(waist),
        let neckNum = Double(neck),
-       let heightNum = Double(height) { // Convert heightString to Double
+       let heightNum = Double(height) {
         
-        if selectedGender == "Male" {
+        if sex == "Male" {
             // Formula for men
             // 1.0324-0.19077\log\left(80-40\right)+0.15456\log\left(170\right)
             // 495 / (1.0324 - 0.19077 * log10(waist - neck) + 0.15456 * log10(height)) - 450

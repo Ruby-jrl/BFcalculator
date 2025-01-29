@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var historyManager = HistoryManager() // Declare in the "parent" view where the object first created
+    @StateObject var historyManager = HistoryManager() // where the object first created
     
     var body: some View {
         NavigationView{
             VStack(spacing: 20) {
-                Text("This app helps you estimate and track your body fat!")
+                Text("This app helps you estimate and track your body fat scientifically!")
                     .padding()
                 
                 NavigationLink(destination: NavyCalculatorView()) {
@@ -26,7 +26,7 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: NeuralNetworkView()) {
+                NavigationLink(destination: NeuralNetworkCalculatorView()) {
                     Text("Neural Network Method Calculator")
                         .font(.headline)
                         .padding()
@@ -46,15 +46,15 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: DummyView()) {
-                    Text("Dummy page")
-                        .font(.headline)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
+//                NavigationLink(destination: DummyView()) {
+//                    Text("Dummy page")
+//                        .font(.headline)
+//                        .padding()
+//                        .frame(width: 250)
+//                        .background(Color.blue)
+//                        .foregroundColor(.white)
+//                        .cornerRadius(8)
+//                }
             }
             .navigationTitle("BFCalculator")
         }

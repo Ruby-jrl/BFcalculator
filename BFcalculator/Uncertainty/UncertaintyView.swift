@@ -7,8 +7,7 @@
 import SwiftUI
 
 // data model to represent each row in the table
-struct BodyMetric: Identifiable {
-    var id = UUID()
+struct UncertaintyMetrics {
     let metric: String
     let value: String
     let range: String
@@ -17,7 +16,7 @@ struct BodyMetric: Identifiable {
 struct UncertaintyView: View {
     
     let fromPage: String
-    let selectedGender: String
+    let sex: String
     let age: String
     let ethnicity: String
     let height: String
@@ -26,7 +25,7 @@ struct UncertaintyView: View {
     let neck: String
     let hip: String
     
-    @State private var metrics: [BodyMetric] = []
+    @State private var metrics: [UncertaintyMetrics] = []
     
     var body: some View {
         
@@ -61,7 +60,7 @@ struct UncertaintyView: View {
     private func fetchMetrics() {
         UncertaintyView.prepareMetrics(
             fromPage: fromPage,
-            gender: selectedGender,
+            gender: sex,
             age: age,
             ethnicity: ethnicity,
             height: height,
@@ -76,7 +75,7 @@ struct UncertaintyView: View {
         }
     }
     
-    private static func prepareMetrics(fromPage: String, gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String, completion: @escaping ([BodyMetric]) -> Void) {
+    private static func prepareMetrics(fromPage: String, gender: String, age: String, ethnicity: String, height: String, weight: String, waist: String, neck: String, hip: String, completion: @escaping ([UncertaintyMetrics]) -> Void) {
         
         let dispatchGroup = DispatchGroup()  // track async tasks
 
@@ -88,23 +87,23 @@ struct UncertaintyView: View {
 
         if fromPage == "Navy" {
             heightRange = [
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) + 2), hip: hip) ?? 0,
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) - 2), hip: hip) ?? 0
+                NavyMethodCalculator(sex: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) + 2), hip: hip) ?? 0,
+                NavyMethodCalculator(sex: gender, waist: waist, neck: neck, height: String((Double(height) ?? 0) - 2), hip: hip) ?? 0
             ]
             
             waistRange = [
-                NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) - 2), neck: neck, height: height, hip: hip) ?? 0,
-                NavyMethodCalculator(selectedGender: gender, waist: String((Double(waist) ?? 0) + 2), neck: neck, height: height, hip: hip) ?? 0
+                NavyMethodCalculator(sex: gender, waist: String((Double(waist) ?? 0) - 2), neck: neck, height: height, hip: hip) ?? 0,
+                NavyMethodCalculator(sex: gender, waist: String((Double(waist) ?? 0) + 2), neck: neck, height: height, hip: hip) ?? 0
             ]
             
             neckRange = [
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) + 2), height: height, hip: hip) ?? 0,
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: String((Double(neck) ?? 0) - 2), height: height, hip: hip) ?? 0
+                NavyMethodCalculator(sex: gender, waist: waist, neck: String((Double(neck) ?? 0) + 2), height: height, hip: hip) ?? 0,
+                NavyMethodCalculator(sex: gender, waist: waist, neck: String((Double(neck) ?? 0) - 2), height: height, hip: hip) ?? 0
             ]
             
             hipRange = [
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) - 2)) ?? 0,
-                NavyMethodCalculator(selectedGender: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) + 2)) ?? 0
+                NavyMethodCalculator(sex: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) - 2)) ?? 0,
+                NavyMethodCalculator(sex: gender, waist: waist, neck: neck, height: height, hip: String((Double(hip) ?? 0) + 2)) ?? 0
             ]
             
             let heightError = (heightRange[0] == nil && heightRange[1] == nil) ? "-" :
@@ -123,50 +122,50 @@ struct UncertaintyView: View {
                 gender == "Female" ? "\(String(format: "%.1f", hipRange[0] ?? 0)) - \(String(format: "%.1f", hipRange[1] ?? 0))%" : "-"
             
             completion([
-                BodyMetric(metric: "Gender", value: gender, range: "-"),
-                BodyMetric(metric: "Age", value: age, range: "-"),
-                BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
-                BodyMetric(metric: "Height", value: height + " ± 2", range: heightError),
-                BodyMetric(metric: "Weight", value: weight + " ± 2", range: weightError),
-                BodyMetric(metric: "Waist", value: waist + " ± 2", range: waistError),
-                BodyMetric(metric: "Neck", value: neck + " ± 2", range: neckError),
-                BodyMetric(metric: "Hip", value: hip + " ± 2", range: hipError)
+                UncertaintyMetrics(metric: "Gender", value: gender, range: "-"),
+                UncertaintyMetrics(metric: "Age", value: age, range: "-"),
+                UncertaintyMetrics(metric: "Ethnicity", value: ethnicity, range: "-"),
+                UncertaintyMetrics(metric: "Height", value: height + " ± 2", range: heightError),
+                UncertaintyMetrics(metric: "Weight", value: weight + " ± 2", range: weightError),
+                UncertaintyMetrics(metric: "Waist", value: waist + " ± 2", range: waistError),
+                UncertaintyMetrics(metric: "Neck", value: neck + " ± 2", range: neckError),
+                UncertaintyMetrics(metric: "Hip", value: hip + " ± 2", range: hipError)
             ])
             
         } else if fromPage == "NN" {
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: String((Double(height) ?? 0) + 2), weight: weight, waist: waist) { result in
+            NNCalculator(sex: gender, height: String((Double(height) ?? 0) + 2), weight: weight, waist: waist) { result in
                 heightRange[0] = result ?? 0
                 dispatchGroup.leave()
             }
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: String((Double(height) ?? 0) - 2), weight: weight, waist: waist) { result in
+            NNCalculator(sex: gender, height: String((Double(height) ?? 0) - 2), weight: weight, waist: waist) { result in
                 heightRange[1] = result ?? 0
                 dispatchGroup.leave()
             }
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: height, weight: String((Double(weight) ?? 0) - 2), waist: waist) { result in
+            NNCalculator(sex: gender, height: height, weight: String((Double(weight) ?? 0) - 2), waist: waist) { result in
                 weightRange[0] = result ?? 0
                 dispatchGroup.leave()
             }
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: height, weight: String((Double(weight) ?? 0) + 2), waist: waist) { result in
+            NNCalculator(sex: gender, height: height, weight: String((Double(weight) ?? 0) + 2), waist: waist) { result in
                 weightRange[1] = result ?? 0
                 dispatchGroup.leave()
             }
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) - 2)) { result in
+            NNCalculator(sex: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) - 2)) { result in
                 waistRange[0] = result ?? 0
                 dispatchGroup.leave()
             }
 
             dispatchGroup.enter()
-            NNCalculator(gender: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) + 2)) { result in
+            NNCalculator(sex: gender, height: height, weight: weight, waist: String((Double(waist) ?? 0) + 2)) { result in
                 waistRange[1] = result ?? 0
                 dispatchGroup.leave()
             }
@@ -189,29 +188,29 @@ struct UncertaintyView: View {
                     gender == "Female" ? "\(String(format: "%.1f", hipRange[0] ?? 0)) - \(String(format: "%.1f", hipRange[1] ?? 0))%" : "-"
 
 
-                // construct and return the array of BodyMetric
+                // construct and return the array of UncertaintyMetrics
                 completion([
-                    BodyMetric(metric: "Gender", value: gender, range: "-"),
-                    BodyMetric(metric: "Age", value: age, range: "-"),
-                    BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
-                    BodyMetric(metric: "Height", value: height + " ± 2", range: heightError),
-                    BodyMetric(metric: "Weight", value: weight + " ± 2", range: weightError),
-                    BodyMetric(metric: "Waist", value: waist + " ± 2", range: waistError),
-                    BodyMetric(metric: "Neck", value: neck + " ± 2", range: neckError),
-                    BodyMetric(metric: "Hip", value: hip + " ± 2", range: hipError)
+                    UncertaintyMetrics(metric: "Gender", value: gender, range: "-"),
+                    UncertaintyMetrics(metric: "Age", value: age, range: "-"),
+                    UncertaintyMetrics(metric: "Ethnicity", value: ethnicity, range: "-"),
+                    UncertaintyMetrics(metric: "Height", value: height + " ± 2", range: heightError),
+                    UncertaintyMetrics(metric: "Weight", value: weight + " ± 2", range: weightError),
+                    UncertaintyMetrics(metric: "Waist", value: waist + " ± 2", range: waistError),
+                    UncertaintyMetrics(metric: "Neck", value: neck + " ± 2", range: neckError),
+                    UncertaintyMetrics(metric: "Hip", value: hip + " ± 2", range: hipError)
                 ])
             }
 
         } else {
             completion([
-                BodyMetric(metric: "Gender", value: gender, range: "-"),
-                BodyMetric(metric: "Age", value: age, range: "-"),
-                BodyMetric(metric: "Ethnicity", value: ethnicity, range: "-"),
-                BodyMetric(metric: "Height", value: height + " ± 2", range: "-"),
-                BodyMetric(metric: "Weight", value: weight, range: "-"),
-                BodyMetric(metric: "Waist", value: waist + " ± 2", range: "-"),
-                BodyMetric(metric: "Neck", value: neck + " ± 2", range: "-"),
-                BodyMetric(metric: "Hip", value: hip + " ± 2", range: "-")
+                UncertaintyMetrics(metric: "Gender", value: gender, range: "-"),
+                UncertaintyMetrics(metric: "Age", value: age, range: "-"),
+                UncertaintyMetrics(metric: "Ethnicity", value: ethnicity, range: "-"),
+                UncertaintyMetrics(metric: "Height", value: height + " ± 2", range: "-"),
+                UncertaintyMetrics(metric: "Weight", value: weight, range: "-"),
+                UncertaintyMetrics(metric: "Waist", value: waist + " ± 2", range: "-"),
+                UncertaintyMetrics(metric: "Neck", value: neck + " ± 2", range: "-"),
+                UncertaintyMetrics(metric: "Hip", value: hip + " ± 2", range: "-")
             ])
         }
     }
