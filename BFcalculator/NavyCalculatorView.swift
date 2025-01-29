@@ -11,7 +11,7 @@ import SwiftUI
 struct NavyCalculatorView: View {
     @State private var fromPage: String = "Navy"
     
-    @State private var selectedGender: String = ""
+    @State private var sex: String = ""
     @State private var age: String = ""
     @State private var ethnicity: String = ""
     @State private var height: String = ""
@@ -28,7 +28,7 @@ struct NavyCalculatorView: View {
                 // Section for Demographic Information
                 Section(header: Text("Demographic Information")) {
                     // Gender Picker
-                    Picker("Gender", selection: $selectedGender) {
+                    Picker("Sex", selection: $sex) {
                         Text("Male").tag("Male")
                         Text("Female").tag("Female")
                     }
@@ -44,8 +44,8 @@ struct NavyCalculatorView: View {
                     TextField("Waist (cm)", text: $waist)
                     TextField("Neck (cm)", text: $neck)
                     TextField("Hip (cm) - disabled for male", text: $hip)
-                        .disabled(selectedGender == "Male")
-                        .opacity(selectedGender == "Male" ? 0.3 : 1.0) // field look disabled
+                        .disabled(sex == "Male")
+                        .opacity(sex == "Male" ? 0.3 : 1.0) // field look disabled
                 }
             }
             
@@ -66,7 +66,7 @@ struct NavyCalculatorView: View {
                 
                 NavigationLink(destination: ResultView(
                     fromPage: $fromPage,
-                    selectedGender: $selectedGender,
+                    sex: $sex,
                     age: $age,
                     ethnicity: $ethnicity,
                     height: $height,
@@ -93,7 +93,7 @@ struct NavyCalculatorView: View {
     // Reset function to clear all fields
     private func resetForm() {
         // Reset to default value
-        selectedGender = ""
+        sex = ""
         height = ""
         waist = ""
         neck = ""

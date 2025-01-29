@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@main
+@main //entry point of a program - main()
 struct BFcalculatorApp: App {
     var body: some Scene {
         WindowGroup {

@@ -17,7 +17,7 @@ struct BodyFatScaleBar: View {
                 VStack(alignment: .leading) {
                     // Scale Bar with Proportional Width Segments
                     HStack(spacing: 0) {
-                        ForEach(bodyFatRanges) { range in
+                        ForEach(bodyFatRanges, id: \.description) { range in
                             Rectangle()
                                 .fill(range.color)
                                 .frame(width: geometry.size.width * (range.rangeWidth / totalRange))
@@ -43,7 +43,7 @@ struct BodyFatScaleBar: View {
                     
                     // Labels for Each Range
                     HStack(spacing: 0) {
-                        ForEach(bodyFatRanges) { range in
+                        ForEach(bodyFatRanges, id: \.description) { range in
                             VStack(spacing: 4) {
                                 Text(range.description)
                                     .font(.caption)
@@ -65,14 +65,11 @@ struct BodyFatScaleBar: View {
 
 
 
-struct BodyFatRange: Identifiable {
-    let id = UUID()
-    // Automatically generates a unique ID for each range - needed for it to be identifiable
+struct BodyFatRange {
     let description: String
     let minPercentage: Double
     let maxPercentage: Double
     let color: Color
-    
     var rangeWidth: Double {
         return maxPercentage - minPercentage
     }
@@ -80,15 +77,15 @@ struct BodyFatRange: Identifiable {
 
 
 let maleBodyFatRanges = [
-    BodyFatRange(description: "Athletes", minPercentage: 6, maxPercentage: 13, color: .green),
-    BodyFatRange(description: "Fitness", minPercentage: 14, maxPercentage: 17, color: .blue),
+    BodyFatRange(description: "Athletes", minPercentage: 6, maxPercentage: 13, color: .blue),
+    BodyFatRange(description: "Fitness", minPercentage: 14, maxPercentage: 17, color: .green),
     BodyFatRange(description: "Average", minPercentage: 18, maxPercentage: 24, color: .yellow),
     BodyFatRange(description: "Obese", minPercentage: 25, maxPercentage: 40, color: .red)
 ]
 
 let femaleBodyFatRanges = [
-    BodyFatRange(description: "Athletes", minPercentage: 14, maxPercentage: 20, color: .green),
-    BodyFatRange(description: "Fitness", minPercentage: 21, maxPercentage: 24, color: .blue),
+    BodyFatRange(description: "Athletes", minPercentage: 14, maxPercentage: 20, color: .blue),
+    BodyFatRange(description: "Fitness", minPercentage: 21, maxPercentage: 24, color: .green),
     BodyFatRange(description: "Average", minPercentage: 25, maxPercentage: 31, color: .yellow),
     BodyFatRange(description: "Obese", minPercentage: 32, maxPercentage: 40, color: .red)
 ]

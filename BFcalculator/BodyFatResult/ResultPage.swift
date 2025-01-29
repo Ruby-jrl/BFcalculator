@@ -12,7 +12,7 @@ struct ResultPage: View {
     @EnvironmentObject var historyManager: HistoryManager
     let fromPage: String
     
-    let selectedGender: String
+    let sex: String
     let age: String
     let ethnicity: String
     let height: String
@@ -25,11 +25,11 @@ struct ResultPage: View {
     
     var body: some View {
         
-        let bodyFatRanges = selectedGender == "Male" ? maleBodyFatRanges : femaleBodyFatRanges
+        let bodyFatRanges = sex == "Male" ? maleBodyFatRanges : femaleBodyFatRanges
         
         ScrollView{
             VStack(spacing: 20) {
-                // Header Information
+                
                 Text("Based on the information you provided, your Body Fat Percentage is:")
                     .font(.system(size: 16, weight: .semibold, design: .rounded))
                     .foregroundColor(Color(red: 0.2, green: 0.4, blue: 1))
@@ -48,7 +48,6 @@ struct ResultPage: View {
                         .font(.system(size: 100, weight: .bold, design: .rounded))
                         .foregroundColor(.red)
                 }
-                
                 
                 BodyFatTableView()
                 
@@ -80,18 +79,18 @@ struct ResultPage: View {
         switch fromPage {
         case "Navy":
             print("navy branch")
-            bodyFat = NavyMethodCalculator(selectedGender: selectedGender, waist: waist, neck: neck, height: height, hip: hip)
+            bodyFat = NavyMethodCalculator(sex: sex, waist: waist, neck: neck, height: height, hip: hip)
             
         case "NN":
             print("NN branch")
-            NNCalculator (gender: selectedGender, height: height, weight: weight, waist: waist) { result in
+            NNCalculator (sex: sex, height: height, weight: weight, waist: waist) { result in
                 if let value = result {
                     bodyFat = value
                 } else {
                     print("No value received")
                 }
             }
-            
+
         default:
             print("wrong branch")
         }
@@ -100,21 +99,20 @@ struct ResultPage: View {
 }
 
 
-
 // Create a data model to represent each row in the table.
 struct BodyFatCategory {
     let description: String
-    let men: String
-    let women: String
+    let menRange: String
+    let womenRange: String
 }
 
 // Define a view that takes a list of BodyFatCategory objects and displays them in a structured layout
 struct BodyFatTableView: View {
     let categories: [BodyFatCategory] = [
-        BodyFatCategory(description: "Athletes", men: "6-13%", women: "14-20%"),
-        BodyFatCategory(description: "Fitness", men: "14-17%", women: "21-24%"),
-        BodyFatCategory(description: "Average", men: "18-24%", women: "25-31%"),
-        BodyFatCategory(description: "Obese", men: "25%+", women: "32%+")
+        BodyFatCategory(description: "Athletes", menRange: "6-13%", womenRange: "14-20%"),
+        BodyFatCategory(description: "Fitness", menRange: "14-17%", womenRange: "21-24%"),
+        BodyFatCategory(description: "Average", menRange: "18-24%", womenRange: "25-31%"),
+        BodyFatCategory(description: "Obese", menRange: "25%+", womenRange: "32%+")
     ]
 
     var body: some View {
@@ -143,9 +141,9 @@ struct BodyFatTableView: View {
                 HStack {
                     Text(category.description)
                         .frame(maxWidth: .infinity, alignment: .center)
-                    Text(category.men)
+                    Text(category.menRange)
                         .frame(maxWidth: .infinity, alignment: .center)
-                    Text(category.women)
+                    Text(category.womenRange)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .padding(.vertical, 8)

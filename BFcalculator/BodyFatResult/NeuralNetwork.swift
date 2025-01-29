@@ -7,22 +7,21 @@
 
 import Foundation
 
-struct BodyMetrics: Codable {
-    let gender: String
+struct NNBodyMetrics: Codable {
+    let sex: String
     let height: String
     let weight: String
     let waist: String
-//    let hip: Double
 }
 
-func NNCalculator(gender: String, height: String, weight: String, waist: String, completion: @escaping (Double?) -> Void) {
+func NNCalculator(sex: String, height: String, weight: String, waist: String, completion: @escaping (Double?) -> Void) {
     
     let url = URL(string: "http://127.0.0.1:5000/predict")! // Local API URL
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-    let body = BodyMetrics(gender: gender, height: height, weight: weight, waist: waist)
+    let body = NNBodyMetrics(sex: sex, height: height, weight: weight, waist: waist)
     
     guard let jsonData = try? JSONEncoder().encode(body) else {
         completion(nil)
@@ -61,7 +60,7 @@ func asyncNNCalculatorWrapper(
     waist: String
 ) async -> Double? {
     await withCheckedContinuation { continuation in
-        NNCalculator(gender: sex, height: height, weight: weight, waist: waist) { result in
+        NNCalculator(sex: sex, height: height, weight: weight, waist: waist) { result in
             continuation.resume(returning: result)
         }
     }

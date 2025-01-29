@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Neighbor: Identifiable {
+struct Neighbor: Codable {
     let id: String
     let features: [Double]
     let imageName: String
@@ -18,7 +18,7 @@ struct NearestNView: View {
     @State private var neighborsObjs: [Neighbor] = []
     
     let fromPage: String
-    let selectedGender: String
+    let sex: String
     let age: String
     let ethnicity: String
     let height: String
@@ -43,7 +43,7 @@ struct NearestNView: View {
             // Fetch Button
             Button(action: { processNearestNeighbors( // just adding {} solves the () @mainactor -> void problem  -why
                 fromPage: fromPage,
-                gender: selectedGender,
+                sex: sex,
                 age: age,
                 height: height,
                 weight: weight,
@@ -121,10 +121,10 @@ struct NearestNView: View {
     }
 
     // Simulated fetch function
-    func processNearestNeighbors(fromPage: String, gender: String, age: String, height: String, weight: String, waist: String, neck: String, hip: String) {
+    func processNearestNeighbors(fromPage: String, sex: String, age: String, height: String, weight: String, waist: String, neck: String, hip: String) {
         
         // let userFeatures = [1, 22.5, 167, 50, 63, 84, 24.5] // dummy user data, replace with actual user input
-        let userFeatures = [gender == "Male" ? "0" : "1", age, height, weight, waist, hip, neck].compactMap { Double($0) }
+        let userFeatures = [sex == "Male" ? "0" : "1", age, height, weight, waist, hip, neck].compactMap { Double($0) }
         // (compactMap filters out any elements that cannot be converted to Double)
         // Number of nearest neighbors to find
         let k = 3
@@ -149,6 +149,14 @@ struct NearestNView: View {
             
         }
     }
+    
+    private func getImage(named imageName: String) -> Image {
+        if let uiImage = UIImage(named: imageName) {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image("dxa-placeholder")
+        }
+    }
 }
 
 
@@ -170,14 +178,5 @@ struct TableView: View {
                 Divider()
             }
         }
-    }
-}
-
-
-private func getImage(named imageName: String) -> Image {
-    if let uiImage = UIImage(named: imageName) {
-        return Image(uiImage: uiImage)
-    } else {
-        return Image("dxa-placeholder")
     }
 }
