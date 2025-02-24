@@ -78,11 +78,15 @@ struct ResultPage: View {
         
         switch fromPage {
         case "Navy":
-            print("navy branch")
+            print("result page generated with navy branch")
             bodyFat = NavyMethodCalculator(sex: sex, waist: waist, neck: neck, height: height, hip: hip)
             
+        case "Regression":
+            print("result page generated with regression branch")
+            bodyFat = RegressionCalculator(sex: sex, waist: waist, height: height, weight: weight)
+            
         case "NN":
-            print("NN branch")
+            print("result page generated with NN branch")
             NNCalculator (sex: sex, height: height, weight: weight, waist: waist) { result in
                 if let value = result {
                     bodyFat = value
@@ -90,6 +94,10 @@ struct ResultPage: View {
                     print("No value received")
                 }
             }
+            
+        case "MLP1":
+            print("result page generated with MLP1 branch")
+            bodyFat = MLP1Calculator(sex: sex, height: height, weight: weight, waist: waist)
 
         default:
             print("wrong branch")

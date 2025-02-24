@@ -1,15 +1,15 @@
 //
-//  NeuralNetworkView.swift
+//  SurveyFormView.swift
 //  BFcalculator
 //
-//  Created by Ruby Liu on 07/01/2025.
+//  Created by Ruby Liu on 17/10/2024.
 //
-
 
 import SwiftUI
 
-struct NeuralNetworkCalculatorView: View {
-    @State private var fromPage: String = "NN"
+
+struct RegressionCalculatorView: View {
+    @State private var fromPage: String = "Regression"
     
     @State private var sex: String = ""
     @State private var age: String = ""
@@ -21,10 +21,13 @@ struct NeuralNetworkCalculatorView: View {
     @State private var hip: String = ""
 
     var body: some View {
+
         VStack {
             
             Form {
+                // Section for Demographic Information
                 Section(header: Text("Demographic Information")) {
+                    // Gender Picker
                     Picker("Sex", selection: $sex) {
                         Text("Male").tag("Male")
                         Text("Female").tag("Female")
@@ -32,9 +35,13 @@ struct NeuralNetworkCalculatorView: View {
                     .pickerStyle(.segmented)
                 }
                 
+                // Section for Body Metric Information
                 Section(header: Text("Body Metric Information")) {
+                    // Height Input
                     TextField("Height (cm)", text: $height)
-                    TextField("Weight (kg)", text: $weight)
+                        //.keyboardType(.decimalPad)
+                        //.listRowSeparator(.visible)
+                    TextField("Weight (cm)", text: $weight)
                     TextField("Waist (cm)", text: $waist)
                 }
             }
@@ -51,7 +58,7 @@ struct NeuralNetworkCalculatorView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                
+
                 Spacer()
                 
                 NavigationLink(destination: ResultView(
@@ -75,12 +82,14 @@ struct NeuralNetworkCalculatorView: View {
             }
             .padding()
         }
-        .navigationTitle("FNN Method")
-        
+        .navigationTitle("Regression Method")
+
     }
+    
     
     // Reset function to clear all fields
     private func resetForm() {
+        // Reset to default value
         sex = ""
         height = ""
         weight = ""

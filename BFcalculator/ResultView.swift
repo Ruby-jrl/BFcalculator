@@ -27,7 +27,7 @@ struct ResultView: View {
             Picker("Select Page", selection: $selectedTab) {
                 Text("Result").tag(0)
                 Text("Uncertainty").tag(1)
-                Text("Nearest Neighbor").tag(2)
+                // Text("Nearest Neighbor").tag(2)
             }
             .pickerStyle(SegmentedPickerStyle()) // Makes it look like a tab bar
             .padding()

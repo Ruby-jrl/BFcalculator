@@ -1,15 +1,14 @@
 //
-//  NeuralNetworkView.swift
+//  MLP1Calculator.swift
 //  BFcalculator
 //
-//  Created by Ruby Liu on 07/01/2025.
+//  Created by Ruby Liu on 12/02/2025.
 //
-
 
 import SwiftUI
 
-struct NeuralNetworkCalculatorView: View {
-    @State private var fromPage: String = "NN"
+struct MLP1CalculatorView: View {
+    @State private var fromPage: String = "MLP1"
     
     @State private var sex: String = ""
     @State private var age: String = ""
@@ -75,7 +74,7 @@ struct NeuralNetworkCalculatorView: View {
             }
             .padding()
         }
-        .navigationTitle("FNN Method")
+        .navigationTitle("MLP1 Method")
         
     }
     

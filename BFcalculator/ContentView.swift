@@ -26,8 +26,8 @@ struct ContentView: View {
                         .cornerRadius(8)
                 }
                 
-                NavigationLink(destination: NeuralNetworkCalculatorView()) {
-                    Text("Neural Network Method Calculator")
+                NavigationLink(destination: RegressionCalculatorView()) {
+                    Text("FENLAND Regression Calculator")
                         .font(.headline)
                         .padding()
                         .frame(width: 250)
@@ -35,6 +35,26 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
+                
+                NavigationLink(destination: MLP1CalculatorView()) {
+                    Text("FENLAND MLP Calculator")
+                        .font(.headline)
+                        .padding()
+                        .frame(width: 250)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                
+//                NavigationLink(destination: NeuralNetworkCalculatorView()) {
+//                    Text("Neural Network Method Calculator")
+//                        .font(.headline)
+//                        .padding()
+//                        .frame(width: 250)
+//                        .background(Color.blue)
+//                        .foregroundColor(.white)
+//                        .cornerRadius(8)
+//                }
                 
                 NavigationLink(destination: HistoryView()) {
                     Text("History Tracking")

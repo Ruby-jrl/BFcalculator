@@ -76,16 +76,30 @@ struct BodyFatRange {
 }
 
 
+//let maleBodyFatRanges = [
+//    BodyFatRange(description: "Athletes", minPercentage: 6, maxPercentage: 13, color: .blue),
+//    BodyFatRange(description: "Fitness", minPercentage: 14, maxPercentage: 17, color: .green),
+//    BodyFatRange(description: "Average", minPercentage: 18, maxPercentage: 24, color: .yellow),
+//    BodyFatRange(description: "Obese", minPercentage: 25, maxPercentage: 40, color: .red)
+//]
+//
+//let femaleBodyFatRanges = [
+//    BodyFatRange(description: "Athletes", minPercentage: 14, maxPercentage: 20, color: .blue),
+//    BodyFatRange(description: "Fitness", minPercentage: 21, maxPercentage: 24, color: .green),
+//    BodyFatRange(description: "Average", minPercentage: 25, maxPercentage: 31, color: .yellow),
+//    BodyFatRange(description: "Obese", minPercentage: 32, maxPercentage: 40, color: .red)
+//]
+
 let maleBodyFatRanges = [
-    BodyFatRange(description: "Athletes", minPercentage: 6, maxPercentage: 13, color: .blue),
-    BodyFatRange(description: "Fitness", minPercentage: 14, maxPercentage: 17, color: .green),
-    BodyFatRange(description: "Average", minPercentage: 18, maxPercentage: 24, color: .yellow),
+    BodyFatRange(description: "Athletes", minPercentage: 6, maxPercentage: 14, color: .blue),
+    BodyFatRange(description: "Fitness", minPercentage: 14, maxPercentage: 18, color: .green),
+    BodyFatRange(description: "Average", minPercentage: 18, maxPercentage: 25, color: .yellow),
     BodyFatRange(description: "Obese", minPercentage: 25, maxPercentage: 40, color: .red)
 ]
 
 let femaleBodyFatRanges = [
-    BodyFatRange(description: "Athletes", minPercentage: 14, maxPercentage: 20, color: .blue),
-    BodyFatRange(description: "Fitness", minPercentage: 21, maxPercentage: 24, color: .green),
-    BodyFatRange(description: "Average", minPercentage: 25, maxPercentage: 31, color: .yellow),
+    BodyFatRange(description: "Athletes", minPercentage: 14, maxPercentage: 21, color: .blue),
+    BodyFatRange(description: "Fitness", minPercentage: 21, maxPercentage: 25, color: .green),
+    BodyFatRange(description: "Average", minPercentage: 25, maxPercentage: 32, color: .yellow),
     BodyFatRange(description: "Obese", minPercentage: 32, maxPercentage: 40, color: .red)
 ]
