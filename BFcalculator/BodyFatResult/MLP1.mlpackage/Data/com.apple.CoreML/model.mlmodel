@@ -1,0 +1,381 @@
+Ã
+
+x
+*
+†ÄR
+var_27
+*
+	†Ä¢°¢3
+#com.github.apple.coremltools.sourcetorch==2.5.0¢+
+$com.github.apple.coremltools.version8.2¢:
++com.github.apple.coremltools.source_dialectTorchScript≤ªŒ
+main≈
+
+x
+
+
+CoreML5†
+CoreML5îvar_27f
+const
+x_to_fp16_dtype_0
+*'
+name
+
+"
+x_to_fp16_dtype_0*
+val
+
+
+"
+fp16™
+const/
+fc1_linear_weight_to_fp16
+
+
+T
+*/
+name'
+
+"
+fc1_linear_weight_to_fp16*?
+val8
+
+
+T
+*"
+@model_path/weights/weight.bin@õ
+const'
+fc1_linear_bias_to_fp16
+
+
+
+T*-
+name%
+
+"
+fc1_linear_bias_to_fp16*:
+val3
+
+
+
+T*#
+@model_path/weights/weight.binÄq
+cast
+dtype
+
+x_to_fp16_dtype_0
+
+x
+
+x
+	x_to_fp16
+
+
+
+*
+name
+
+
+"
+cast_1æ
+linear'
+weight
+
+fc1_linear_weight_to_fp16#
+bias
+
+fc1_linear_bias_to_fp16
+x
+
+	x_to_fp16(
+linear_0_cast_fp16
+
+
+
+T*(
+name 
+
+"
+linear_0_cast_fp16u
+relu
+x
+
+linear_0_cast_fp16'
+input_3_cast_fp16
+
+
+
+T*'
+name
+
+"
+input_3_cast_fp16´
+const/
+fc2_linear_weight_to_fp16
+
+
+T
+T*/
+name'
+
+"
+fc2_linear_weight_to_fp16*@
+val9
+
+
+T
+T*#
+@model_path/weights/weight.binÄ
+õ
+const'
+fc2_linear_bias_to_fp16
+
+
+
+T*-
+name%
+
+"
+fc2_linear_bias_to_fp16*:
+val3
+
+
+
+T*#
+@model_path/weights/weight.binÄy∆
+linear'
+weight
+
+fc2_linear_weight_to_fp16#
+bias
+
+fc2_linear_bias_to_fp16
+x
+
+input_3_cast_fp16(
+linear_1_cast_fp16
+
+
+
+T*(
+name 
+
+"
+linear_1_cast_fp16r
+relu
+x
+
+linear_1_cast_fp16&
+var_15_cast_fp16
+
+
+
+T*%
+name
+
+"
+op_15_cast_fp16é
+add
+x
+
+var_15_cast_fp16
+y
+
+input_3_cast_fp16'
+input_7_cast_fp16
+
+
+
+T*'
+name
+
+"
+input_7_cast_fp16´
+const/
+fc3_linear_weight_to_fp16
+
+
+T
+T*/
+name'
+
+"
+fc3_linear_weight_to_fp16*@
+val9
+
+
+T
+T*#
+@model_path/weights/weight.binÄ{ú
+const'
+fc3_linear_bias_to_fp16
+
+
+
+T*-
+name%
+
+"
+fc3_linear_bias_to_fp16*;
+val4
+
+
+
+T*$
+@model_path/weights/weight.binÄÍ∆
+linear'
+weight
+
+fc3_linear_weight_to_fp16#
+bias
+
+fc3_linear_bias_to_fp16
+x
+
+input_7_cast_fp16(
+linear_2_cast_fp16
+
+
+
+T*(
+name 
+
+"
+linear_2_cast_fp16r
+relu
+x
+
+linear_2_cast_fp16&
+var_22_cast_fp16
+
+
+
+T*%
+name
+
+"
+op_22_cast_fp16ä
+add
+x
+
+var_22_cast_fp16
+y
+
+input_7_cast_fp16%
+input_cast_fp16
+
+
+
+T*%
+name
+
+"
+input_cast_fp16û
+const(
+fc4_weight_to_fp16
+
+
+	
+T*(
+name 
+
+"
+fc4_weight_to_fp16*A
+val:
+
+
+	
+T*$
+@model_path/weights/weight.binÄÏÇ
+const 
+fc4_bias_to_fp16
+
+
+
+	*&
+name
+
+"
+fc4_bias_to_fp16*/
+val(
+
+
+
+	
+:
+°:Ω>∞9f∫E/∏;'¥y?Ÿ;∂
+linear 
+weight
+
+fc4_weight_to_fp16
+bias
+
+fc4_bias_to_fp16
+x
+
+input_cast_fp16(
+linear_3_cast_fp16
+
+
+
+	*(
+name 
+
+"
+linear_3_cast_fp16à
+const*
+"linear_3_cast_fp16_to_fp32_dtype_0
+*8
+name0
+(
+&"$
+"linear_3_cast_fp16_to_fp32_dtype_0*
+val
+
+
+"
+fp32ê
+cast/
+dtype&
+$
+"linear_3_cast_fp16_to_fp32_dtype_0
+x
+
+linear_3_cast_fp16
+var_27
+
+
+	*
+name
+
+
+"
+cast_0"Â
+	buildInfo◊"
+
+
+ƒ"¡
+6
+!
+
+"
+coremltools-version
+	
+"
+8.2
+@
+)
+!
+"
+coremltools-component-torch
+
+	"
+2.5.0
+E
+(
+ 
+"
+coremltools-source-dialect
+
+"
+TorchScript
